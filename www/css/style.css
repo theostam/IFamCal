@@ -1,0 +1,22 @@
+.today {
+    background:#E3F2FF;
+    color:darkblue;
+}
+
+.different-month {
+     color:#C0C0C0;
+ }
+.monthButtonHeight{
+    height:100px;
+}
+.weekButtonHeight{
+    height:400px;
+}
+.period{
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+    text-align: center;
+    font-style:italic;
+    font-weight:bold
+}

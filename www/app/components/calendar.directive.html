@@ -1,0 +1,53 @@
+<div class="padding" on-swipe-left="next()" on-swipe-right="previous()">
+
+    <div class="period">{{selectedPeriod}}</div>
+
+    <div class="button-bar">
+        <button ng-click="showToday()" class="button button-block button-positive" style="margin-right: 150px">
+            ToDay
+        </button>
+        <button ng-click="showWeek()"class="button button-block button-positive" style="margin-right: 100px">
+            Week
+        </button>
+        <button ng-click="showMonth()"class="button button-block button-positive" style="margin-right: 100px">
+            Month
+        </button>
+    </div>
+    <div ng-show="selectedType != 'day'">
+        <div class="row">
+            <button class="col button button-clear button-positive">Sun</button>
+            <button class="col button button-clear button-positive">Mon</button>
+            <button class="col button button-clear button-positive">Tue</button>
+            <button class="col button button-clear button-positive">Wed</button>
+            <button class="col button button-clear button-positive">Thu</button>
+            <button class="col button button-clear button-positive">Fri</button>
+            <button class="col button button-clear button-positive">Sat</button>
+        </div>
+
+        <div ng-cloak class="row" ng-repeat="week in weeks">
+            <button class="col"
+                  ng-style="buttonheight"
+                  ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }"
+                  ng-click="select(day)" animation="slide-in-up"
+                  ng-repeat="day in week.days">{{ buttonText(day) }}
+            </button>
+        </div>
+    </div>
+    <div ng-show="selectedType == 'day'">
+        <button class="button  icon ion-plus button-positive" style="float:right;" ng-click="openModal(null);"></button>
+        <br><br>
+
+        <ion-item class="card item-remove-animate  item-icon-right" ng-repeat="note in notesOfDay">
+            <a href="#" ng-click="openModal(note);" style="text-decoration:none;">
+
+                <div class="item item-divider">{{note.name}}</div>
+
+                <div class="item item-body">
+                    <p>
+                        {{note.text}}
+                    </p>
+                </div>
+            </a>
+        </ion-item>
+    </div>
+</div>

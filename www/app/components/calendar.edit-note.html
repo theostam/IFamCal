@@ -1,0 +1,23 @@
+<ion-modal-view>
+
+  <ion-header-bar>
+    <h1 class="title">{{currentNote.name}}</h1>
+  </ion-header-bar>
+
+  <ion-content>
+    <div class="item item-input item-stacked-label">
+      <textarea rows="12" ng-model="currentNote.text" ng-readonly="!isAutorized" required placeholder="your note ..."></textarea>
+    </div>
+
+    <br>
+      <div style="padding-left: 10px; padding-right: 10px;" >
+      <ion-button ng-show="true" ng-init="saveEmpty(form)" style="float: left; " class="button  button-large button-positive" ng-click="closeModal()" >
+        Cancel
+      </ion-button>
+      <ion-button ng-show="isAutorized" ng-init="" style= "float: right" class="button  button-large button-positive" ng-click="saveNote()" >
+        OK
+      </ion-button>
+      </div>
+  </ion-content>
+
+</ion-modal-view>
