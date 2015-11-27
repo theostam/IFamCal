@@ -28,7 +28,7 @@ angular.module('Agenda', [])
             var lastMoficationDate = moment("1970-01-01"); // testing
             //  get last modification date from server
             //  Notes.getNotesByMonth(date).then(
-          var dateReceived = Notes.getLastModificationDate().then(
+          var dateReceived = Notes.getLastModificationDate( Localstorage.get("username") ).then(
               function(data){
                 var dateAsString = data.data;
                   lastMoficationDate = moment(dateAsString, "YYYYMMDD HHmmss");
@@ -53,7 +53,7 @@ angular.module('Agenda', [])
             if (moment(lastMoficationDate).isAfter(lastUpdateTimestamp)) {
                 // get data
                 lastUpdateTimestamp = moment("2015-05-01", "YYYY-MM-DD");  // testing remove
-                var notesReceived = Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD") ).then(
+                var notesReceived = Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username") ).then(
                     function(data){
                         processNewNotes( data.data.result ); // testing: vm.notes = data;
                         displayNotes();
@@ -128,6 +128,8 @@ angular.module('Agenda', [])
             // so adding new notes -without sorting- is enough. For Now. TODO: make more efficient.
             // if existing note with same date and user, then overwite text.
             // if text is empty then delete note
+            if (data == undefined) return;
+
             var len = data.length;
             for( var i=0; i < data.length; i++){
                 var index = indexof( data[i] );

@@ -47,14 +47,14 @@ angular.module('notes.service', ['constants'])
           };
           // send note to server THE POST ALWAYS END IN ERROR !!!
           var request = $http({
-            method: "jsonp",
-            url: "http://"+SERVERHOST+":"+SERVERPORT+"/notes/saveorupdate/"+note.date+"/"+note.name+"/"+note.text+"/callback=JSON_CALLBACK",
+            method: "get",
+            url: "http://"+SERVERHOST+":"+SERVERPORT+"/notes/saveorupdate/"+note.date+"/"+note.name+"/"+note.text,
           });
             request.success(function (data, status, headers, config) {
-//            alert( 'success: ' + data);
+            alert( 'success: ' + data);
           }).
               error(function (data, status, headers, config) {
-                alert('error: ' + status);
+                alert('zzerror: ' + status);
               });
 
         },
@@ -70,10 +70,10 @@ angular.module('notes.service', ['constants'])
               promise.error(errorHandler);
         },
 
-        getNotesSince: function( date ){
+        getNotesSince: function( date, username ){
           console.log('service: get notes since ' + date);
 //            var promise =  $http.jsonp( "http://server2-famcal.rhcloud.com/notes/since?user=Theo&callback=JSON_CALLBACK&date="+date);
-          var promise =  $http.jsonp( "http://"+SERVERHOST+":"+SERVERPORT+"/notes/since/Theo/JSON_CALLBACK/"+date);
+          var promise =  $http.get( "http://"+SERVERHOST+":"+SERVERPORT+"/notes?user="+username+"&date="+date+"&callback=JSON_CALLBACK");
 //          var promise =  $http.jsonp( "http://SERVERHOST:SERVERPORT/notes/since?user=Theo&callback=JSON_CALLBACK&date="+date);
           return promise;
         //var deferred = $q.defer();
@@ -86,8 +86,23 @@ angular.module('notes.service', ['constants'])
         //return deferred.promise;
       },
 
-      getLastModificationDate: function () {
-        var promise =  $http.jsonp( "http://"+SERVERHOST+":"+SERVERPORT+"/notes/lastmodificationdate/Theo/JSON_CALLBACK");
+      getLastModificationDate: function ( username ) {
+        //$http.defaults.headers.common.Authorization = 'Basic aapnootmies';
+        //$http.defaults.headers.json = { 'My-Header' : 'keees' };
+        var req = {
+          method: 'get',
+          url: "http://"+SERVERHOST+":"+SERVERPORT+"/notes/lastmodificationdate?user="+username,
+          headers: {
+            'Authorization': 'Basic aapnootmies'
+          }
+        };
+        var config = {headers: {
+          'Authorization': 'Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ=='
+        }
+        };
+        var promise =  $http(req, config);
+//        var promise =  $http.jsonp( "http://"+SERVERHOST+":"+SERVERPORT+"/notes/lastmodificationdate?user="+username+"&callback=JSON_CALLBACK", config);
+//        var promise =  $http.jsonp( "http://"+SERVERHOST+":"+SERVERPORT+"/notes/lastmodificationdate?user="+username+"&callback=JSON_CALLBACK", config);
 
 //        var promise =  $http.jsonp( "http://localhost:8080/notes/lastmodificationdate?user=Theo&callback=JSON_CALLBACK");
 
