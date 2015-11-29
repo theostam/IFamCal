@@ -51,10 +51,9 @@ angular.module('notes.service', ['constants'])
             url: "http://"+SERVERHOST+":"+SERVERPORT+"/notes/saveorupdate/"+note.date+"/"+note.name+"/"+note.text,
           });
             request.success(function (data, status, headers, config) {
-            alert( 'success: ' + data);
           }).
               error(function (data, status, headers, config) {
-                alert('zzerror: ' + status);
+                console.log('error: ' + status);
               });
 
         },
