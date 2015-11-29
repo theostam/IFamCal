@@ -22,15 +22,15 @@ angular.module('Agenda', [])
         if (connectionType == 'WIFI' || (connectionType == 'CELL' && !updateOnlyOnWifi) ){
             var lastUpdateTimestampString = Localstorage.get("lastUpdateTimestamp");
             var lastUpdateTimestamp = moment("1970-01-01") ;
-            //if (lastUpdateTimestampString != 'undefined'){
-            //    lastUpdateTimestamp = moment(lastUpdateTimestampString, "YYYYMMDD HHmmss") ;
-            //}
-            var lastMoficationDate = moment("1970-01-01"); // testing
+            if (lastUpdateTimestampString){
+                lastUpdateTimestamp = moment(lastUpdateTimestampString, "YYYYMMDD HHmmss") ;
+            }
+//            var lastMoficationDate = moment("1970-01-01"); // testing
             //  get last modification date from server
             //  Notes.getNotesByMonth(date).then(
           var dateReceived = Notes.getLastModificationDate( Localstorage.get("username") ).then(
               function(data){
-                var dateAsString = data.data;
+                var dateAsString = data.data.result;
                   lastMoficationDate = moment(dateAsString, "YYYYMMDD HHmmss");
                 console.log("data received: " + dateAsString);
               },
@@ -52,7 +52,7 @@ angular.module('Agenda', [])
         dateReceived.then( function(data) {
             if (moment(lastMoficationDate).isAfter(lastUpdateTimestamp)) {
                 // get data
-                lastUpdateTimestamp = moment("2015-05-01", "YYYY-MM-DD");  // testing remove
+//                lastUpdateTimestamp = moment("2015-05-01", "YYYY-MM-DD");  // testing remove
                 var notesReceived = Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username") ).then(
                     function(data){
                         processNewNotes( data.data.result ); // testing: vm.notes = data;
@@ -63,16 +63,6 @@ angular.module('Agenda', [])
                         console.log( 'error' + data );
                     }
                 );
-
-                //var notesReceived = Notes.all( ).then(
-                //    function(data){
-                //        vm.notes = data;
-                //        console.log("data received: " + data );
-                //    },
-                //    function(data){
-                //        console.log( 'error' + data );
-                //    }
-                //);
 
                 notesReceived.then( function(data){
                     // save data in Local storage
