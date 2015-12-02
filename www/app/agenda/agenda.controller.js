@@ -23,7 +23,8 @@ angular.module('Agenda', [])
             var lastUpdateTimestampString = Localstorage.get("lastUpdateTimestamp");
             var lastUpdateTimestamp = moment("1970-01-01") ;
             if (lastUpdateTimestampString){
-                lastUpdateTimestamp = moment(lastUpdateTimestampString, "YYYYMMDD HHmmss") ;
+                var temp = moment(lastUpdateTimestampString, "YYYYMMDD HHmmss") ;
+                if (temp.isValid()) lastUpdateTimestamp = temp;
             }
 //            var lastMoficationDate = moment("1970-01-01"); // testing
             //  get last modification date from server

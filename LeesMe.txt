@@ -1,3 +1,22 @@
-De server die gebruikt wordt:
-In c:\data\workspace\express
-> node server
+Install & run
+Follow all instructions on ionic website to build the project.
+...
+first: cordova plugin add cordova-plugin-whitelist
+...
+(plug the device in)
+ionic build android
+ionic run android
+
+
+DEBUGGING: in chrome browser navigate to chrome://inspect
+
+Extras:
+- the USB driver for device is downloaded seperately.
+- for cordoba > 5.0 it is necessary to:
+    -cordova plugin add cordova-plugin-whitelist
+    then:
+    - cordova platform rm android
+    - cordova platform add android
+TODO solve error message on device: "No Content-Security-Policy meta tag found. Please add one when using the cordova-plugin-whitelist plugin."
+
+

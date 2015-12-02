@@ -51,7 +51,7 @@ parameters:
                 };
 
                 scope.buttonText = function(day) {
-                    var text = day.number;
+                    var text = day.number ;
                     // notes may not yet be available cuase of http request
                     text = text + scope.constructTextOfDay( day.date );
                     //if (scope.notes){
@@ -102,9 +102,9 @@ parameters:
                         for (var i = 0; i < nrOfNotes; i++) {
                             if (dateYYMMDD == scope.notes[i].date){
                                 if (text != '') {
-                                    text = text + '\n' + scope.notes[i].name + ':' + scope.notes[i].text;
+                                    text = text + '\n' + scope.notes[i].name + '\n' + scope.notes[i].text;
                                 } else {
-                                    text = '\n' + scope.notes[i].name + ':' + scope.notes[i].text;
+                                    text = '\n' + scope.notes[i].name + '\n' + scope.notes[i].text;
                                 }
                             }
                         }
@@ -291,7 +291,8 @@ parameters:
             var startweek = startdate.week();
             var endweek = startweek;
             if (selectedType == "month") {
-                endweek = scope.currentDate.clone().endOf("month").week();
+//                endweek = scope.currentDate.clone().endOf("month").week();
+                endweek = startweek + 5;
             }
 
             for( var i=startweek; i <= endweek; i++){

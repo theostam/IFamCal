@@ -3,25 +3,31 @@
     <div class="period">{{selectedPeriod}}</div>
 
     <div class="button-bar">
-        <button ng-click="showToday()" class="button button-block button-positive" style="margin-right: 150px">
+        <div class="col text-left">
+        <button ng-click="showToday()" class="button  button-positive" >
             ToDay
         </button>
-        <button ng-click="showWeek()"class="button button-block button-positive" style="margin-right: 100px">
+            </div>
+            <div class="col text-center">
+        <button ng-click="showWeek()"class="button  button-positive" >
             Week
         </button>
-        <button ng-click="showMonth()"class="button button-block button-positive" style="margin-right: 100px">
+            </div>
+                <div class="col text-right">
+        <button ng-click="showMonth()"class="button  button-positive" >
             Month
         </button>
+                </div>
     </div>
     <div ng-show="selectedType != 'day'">
         <div class="row">
-            <button class="col button button-clear button-positive">Sun</button>
-            <button class="col button button-clear button-positive">Mon</button>
-            <button class="col button button-clear button-positive">Tue</button>
-            <button class="col button button-clear button-positive">Wed</button>
-            <button class="col button button-clear button-positive">Thu</button>
-            <button class="col button button-clear button-positive">Fri</button>
-            <button class="col button button-clear button-positive">Sat</button>
+            <button class="col button button-clear button-small button-positive">Sun</button>
+            <button class="col button button-clear button-small button-positive">Mon</button>
+            <button class="col button button-clear button-small button-positive">Tue</button>
+            <button class="col button button-clear button-small button-positive">Wed</button>
+            <button class="col button button-clear button-small button-positive">Thu</button>
+            <button class="col button button-clear button-small button-positive">Fri</button>
+            <button class="col button button-clear button-small button-positive">Sat</button>
         </div>
 
         <div ng-cloak class="row" ng-repeat="week in weeks">
@@ -29,7 +35,7 @@
                   ng-style="buttonheight"
                   ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }"
                   ng-click="select(day)" animation="slide-in-up"
-                  ng-repeat="day in week.days">{{ buttonText(day) }}
+                  ng-repeat="day in week.days" style="font-size:x-small;white-space:pre-wrap;">{{ buttonText(day) }}
             </button>
         </div>
     </div>
