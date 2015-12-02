@@ -6,7 +6,7 @@ parameters:
             That method will send it to the server. (But Not put in localstorage)
     selectedType: day, week or month    // TODO create constants
      */
-.directive("calendar", function($rootScope, $ionicModal, Notes, Localstorage) {
+.directive("calendar", function($rootScope, $ionicModal, $ionicPlatform, Notes, Localstorage) {
         return {
             restrict: "E",
             templateUrl: "app/components/calendar.directive.html", //"templates/calendar.html",
@@ -113,9 +113,11 @@ parameters:
                 };
 
                 scope.saveNote = function (){
-                    if (scope.currentNote.changeDate == undefined) { // new note
+                    if ( typeof(scope.currentNote.changeDate) == "undefined") { // new note
                         scope.currentNote.changeDate = moment(); // only marker
                         scope.notes.push( scope.currentNote );
+                        // save data in Local storage
+                        Localstorage.set("notes", JSON.stringify(scope.notes));
                     }
                     Notes.save( scope.currentNote );
                     scope.getNotesOfDay(scope.currentDate);
@@ -193,6 +195,8 @@ parameters:
                 };
 
                 scope.openModal = function(note) {
+                    //var backbuttonHandler = $ionicPlatform.registerBackButtonAction(function(event) {
+                    //    }, 100);
                     var username = Localstorage.get("username");
                     if (username == 'undefined' || username == '') return ;
 
@@ -212,6 +216,7 @@ parameters:
                     scope.modal.show();
                 };
                 scope.closeModal = function() {
+//                    $scope.$on('$destroy', backbuttonHandler);
                     scope.modal.hide();
                 };
                 //Cleanup the modal when we're done with it!
