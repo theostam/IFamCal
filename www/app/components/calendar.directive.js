@@ -6,7 +6,7 @@ parameters:
             That method will send it to the server. (But Not put in localstorage)
     selectedType: day, week or month    // TODO create constants
      */
-.directive("calendar", function($rootScope, $ionicModal, $ionicPlatform, Notes, Localstorage) {
+.directive("calendar", function($rootScope, $ionicModal, $ionicPlatform, Notes, Localstorage, $window, $document, $ionicHistory) {
         return {
             restrict: "E",
             templateUrl: "app/components/calendar.directive.html", //"templates/calendar.html",
@@ -217,6 +217,7 @@ parameters:
                 };
                 scope.closeModal = function() {
 //                    $scope.$on('$destroy', backbuttonHandler);
+                    alert('cloe modal');
                     scope.modal.hide();
                 };
                 //Cleanup the modal when we're done with it!
@@ -231,6 +232,37 @@ parameters:
                 scope.$on('modal.removed', function() {
                     // Execute action
                 });
+
+                $ionicPlatform.registerBackButtonAction(function (event) {
+                    if(scope.selectedType == 'day'){
+//                        navigator.app.exitApp();
+//                        event.preventDefault();
+                        scope.showMonth();
+                        scope.$apply();
+                    }
+                    else {
+                        navigator.app.exitApp();
+//                        $ionicHistory.goBack();
+                    }
+                }, 100);
+
+                //var document = $document[0];
+                //
+                //function triggerBackButton() {
+                //    var backButtonEvent = document.createEvent('Events');
+                //    backButtonEvent.initEvent('backbutton', false, false);
+                //    document.dispatchEvent(backButtonEvent);
+                //}
+                //
+                //function registerBackButtonFake() {
+                //    document.addEventListener('keyup', function (event) {
+                //        // Alt+Ctrl+<
+                //        if (event.altKey && event.ctrlKey && event.keyCode === 188) {
+                //            triggerBackButton();
+                //        }
+                //    });
+                //}
+
 
                 scope.init = function(){
                     if (!scope.initDone){
@@ -247,6 +279,9 @@ parameters:
                             scope.modal = modal;
                         });
                     }
+                    //if (!$window.cordova) {
+                    //    $ionicPlatform.ready(registerBackButtonFake);
+                    //}
                 };
 
                 scope.buildCalendar = function( selectedType ){

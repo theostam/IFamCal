@@ -13,7 +13,9 @@ angular.module('starter',
             'Agenda',
             'notes.service',
             'localstorage.service',
-            'Calendar'
+            'network.service',
+            'Calendar',
+            'ngCordova'
         ])
 
 .run(function($ionicPlatform) {
