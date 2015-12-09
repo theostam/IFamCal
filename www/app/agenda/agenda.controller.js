@@ -9,12 +9,12 @@ angular.module('Agenda', [])
         });
 
         // check update on network allowed
-        var updateOnlyOnWifi = Localstorage.get("updateOnlyOnWifi");
-//        updateOnlyOnWifi = false; // testing
+//        var updateOnlyOnWifi = Localstorage.get("updateOnlyOnWifi");
+        updateOnlyOnWifi = false; // testing
 
         // if update on network not allowed, check wifi
         var connectionType = checkConnection();  // NONE, WIFI or CELL
-        showConnectionStatus( connectionType );
+//        showConnectionStatus( connectionType );
 
         // if update on network allowed -and connected-, or on wifi,
         //      get last modification date from server
@@ -75,21 +75,12 @@ angular.module('Agenda', [])
         } );
 
         function checkConnection () {
-            //if (window.Connection) {
-            //    if (navigator.connection.type == Connection.NONE) {
-            //        return 'NONE'
-            //    } else if (navigator.connection.type == Connection.WIFI) {
-            //        return 'WIFI';
-            //    } else if (navigator.connection.type == Connection.CELL_2G || navigator.connection.type == Connection.CELL_3G || navigator.connection.type == Connection.CELL_4G ) {
-            //        return 'CELL';
-            //    }
-            //}
             if (window.Connection) {
-                if (Network.type == Connection.NONE) {
+                if (Network.type() == Connection.NONE) {
                     return 'NONE'
-                } else if (Network.type == Connection.WIFI) {
+                } else if (Network.type() == Connection.WIFI) {
                     return 'WIFI';
-                } else if (Network.type == Connection.CELL_2G || Network.type == Connection.CELL_3G || Network.type == Connection.CELL_4G ) {
+                } else if (Network.type() == Connection.CELL_2G || Network.type() == Connection.CELL_3G || Network.type() == Connection.CELL_4G ) {
                     return 'CELL';
                 }
             }

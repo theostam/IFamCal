@@ -20,3 +20,18 @@ Extras:
 TODO solve error message on device: "No Content-Security-Policy meta tag found. Please add one when using the cordova-plugin-whitelist plugin."
 
 
+*** Cordova things ***
+Make sure you are using the latest version of the Cordova CLI:
+
+$ npm install -g cordova
+Refresh the ios.json / android.json file (inside the /plugin folder):
+
+$ cordova platform rm [ios/android]
+$ cordova platform add [ios/android]
+Update your project to the latest version of Cordova:
+
+This command updates the cordova.js and other Cordova-dependent files to the latest version of Cordova.
+
+$ cordova platform update [ios/android]
+
+

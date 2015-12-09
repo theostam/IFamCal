@@ -42,26 +42,21 @@ parameters:
                 scope.showWeek = function(){
                     scope.selectedType = 'week';
                     scope.selectedPeriod = 'Week '+ scope.currentDate.format("w, YYYY") ;
+                    getWidthOfNoteButton();
                     scope.buildCalendar('week');
                 };
                 scope.showMonth= function(){
                     scope.selectedType = 'month';
                     scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");
+                    getWidthOfNoteButton();
                     scope.buildCalendar('month');
                 };
 
-                scope.buttonText = function(day) {
-                    var text = day.number ;
-                    // notes may not yet be available cuase of http request
-                    text = text + scope.constructTextOfDay( day.date );
-                    //if (scope.notes){
-                    //    var notesText = scope.notes.get( day.date.dayOfYear() );
-                    //    if (typeof notesText !== 'undefined') {
-                    //        text = text + notesText;
-                    //    }
-                    //}
-                    return text;
-                };
+                //scope.buttonText = function(day) {
+                //    var text = day.number;
+                //    text = text + constructTextOfDay( day.date );
+                //    return text;
+                //};
 
                 scope.next = function() {
                     if (scope.selectedType == 'day'){
@@ -92,22 +87,37 @@ parameters:
                 //    scope.getNotesByDay( scope.currentDate );
                 //    dataChanged = true;
                 //});
+                function getOrientation(){
+                    if (window.outerWidth > window.outerHeight) return 'landscape';
+                    return 'portrait';
+                }
 
-                scope.constructTextOfDay = function( date ){
+                function constructTextOfDay( date, noteButtonWidth ){
                     // TODO: make more efficient for a sorted notes array
                     var dateYYMMDD = date.format('YYYYMMDD'); // moment( date ).format('YYYYMMDD');
-                    var text = '';
+                    var text = date.date();
+                    var notesOfThisDay = [];
+                    var maxNrOfCharactersInCell = Math.floor(5 * noteButtonWidth / 10);
+//                    console.log('maxNrOfCharactersInCell= '+maxNrOfCharactersInCell)
                     if (typeof scope.notes != 'undefined'){ // needed because view is often rendered before notes are ready
                         var nrOfNotes = scope.notes.length;
                         for (var i = 0; i < nrOfNotes; i++) {
-                            if (dateYYMMDD == scope.notes[i].date){
+                            if (dateYYMMDD == scope.notes[i].date) {
+                                notesOfThisDay.push(scope.notes[i]);
+                            }
+                        }
+                        var nrNotesOfThisDay = notesOfThisDay.length;
+                        var nrOfCharactersPerPerson = maxNrOfCharactersInCell / nrNotesOfThisDay ;
+                        if (nrNotesOfThisDay > 0){
+                            for (var i = 0; i < nrNotesOfThisDay; i++) {
                                 if (text != '') {
-                                    text = text + '\n' + scope.notes[i].name + '\n' + scope.notes[i].text;
+                                    text = text + '\n' + notesOfThisDay[i].name.substring(0, 1) + ':' + notesOfThisDay[i].text.substring(0, Math.min(notesOfThisDay[i].text.length, nrOfCharactersPerPerson));
                                 } else {
-                                    text = '\n' + scope.notes[i].name + '\n' + scope.notes[i].text;
+                                    text = '\n' + notesOfThisDay[i].name.substring(0, 1) + ':' + notesOfThisDay[i].text.substring(0, Math.min(notesOfThisDay[i].text.length, nrOfCharactersPerPerson));
                                 }
                             }
                         }
+
                     }
                     return text;
                 };
@@ -217,7 +227,6 @@ parameters:
                 };
                 scope.closeModal = function() {
 //                    $scope.$on('$destroy', backbuttonHandler);
-                    alert('cloe modal');
                     scope.modal.hide();
                 };
                 //Cleanup the modal when we're done with it!
@@ -264,25 +273,6 @@ parameters:
                 //}
 
 
-                scope.init = function(){
-                    if (!scope.initDone){
-                        scope.initDone = true;
-                        scope.currentDate = moment();
-                        scope.selectedType= 'month';  // default
-                        scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");
-                        scope.buildCalendar(scope.selectedType);
-
-                        $ionicModal.fromTemplateUrl('app/components/calendar.edit-note.html', {
-                            scope: scope,
-                            animation: 'slide-in-up'
-                        }).then(function(modal) {
-                            scope.modal = modal;
-                        });
-                    }
-                    //if (!$window.cordova) {
-                    //    $ionicPlatform.ready(registerBackButtonFake);
-                    //}
-                };
 
                 scope.buildCalendar = function( selectedType ){
                     scope.currentDate = removeTime(scope.currentDate || moment());
@@ -310,51 +300,98 @@ parameters:
                     buildMonth(scope, scope.selectedType, next );
                 }
 
+                function getWidthOfNoteButton(){
+                    var test = document.getElementById("notebutton");
+                    if (test) noteButtonWidth = test.clientWidth ;
+//                    console.log('button width = ' + width);
+                }
+
+                function removeTime(date) {
+                    return date.hour(0).minute(0).second(0).millisecond(0);
+                }
+
+                // get week number of first week: start.week()
+                // get week number of last week:  start.endof("month").week()
+                function buildMonth(scope, selectedType, startdate ) {
+                    scope.weeks = [];
+                    var currentMonth = scope.currentDate.clone().month();
+                    var date = startdate.clone();
+                    var startweek = startdate.week();
+                    var endweek = startweek;
+                    if (selectedType == "month") {
+//                endweek = scope.currentDate.clone().endOf("month").week();
+                        endweek = startweek + 5;
+                    }
+
+                    for( var i=startweek; i <= endweek; i++){
+                        scope.weeks.push({ days: buildWeek( date, currentMonth)} ) ;
+                        date.add(1, "w");
+                    }
+                }
+
+                function buildWeek(startdate, currentMonth) {
+                    var days = [];
+                    var date = startdate.clone();
+                    for (var i = 0; i < 7; i++) {
+                        days.push({
+                            note: constructTextOfDay(date, noteButtonWidth),
+                            name: date.format("dd").substring(0, 1),
+                            number: date.date(),
+                            isCurrentMonth: date.month() === currentMonth,
+                            isToday: date.isSame(new Date(), "day"),
+                            date: date
+                        });
+                        date = date.clone();
+                        date.add(1, "d");
+                    }
+                    return days;
+                }
+
+                function setNoteButtonText(noteButtonWidth){
+                    scope.weeks.forEach( function (week)
+                    {
+                        week.days.forEach( function ( day ){
+                            day.note = constructTextOfDay( day.date, noteButtonWidth );
+                        })
+                    });
+                }
+
+                scope.init = function(){
+                    if (!scope.initDone){
+                        scope.initDone = true;
+                        scope.currentDate = moment();
+                        scope.selectedType= 'month';  // default
+                        scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");
+                        scope.buildCalendar(scope.selectedType);
+
+                        $ionicModal.fromTemplateUrl('app/components/calendar.edit-note.html', {
+                            scope: scope,
+                            animation: 'slide-in-up'
+                        }).then(function(modal) {
+                            scope.modal = modal;
+                        });
+                        angular.element(document).ready(function () {
+                            getWidthOfNoteButton();
+                            setNoteButtonText( noteButtonWidth );
+                        });
+                        //window.addEventListener("resize", +hfunction() {
+                        //    orientation = 'portrait';
+                        //    if (window.outerWidth > window.outerHeight) orientation = 'landscape'
+                        //}, false);
+
+                    }
+                    //if (!$window.cordova) {
+                    //    $ionicPlatform.ready(registerBackButtonFake);
+                    //}
+                };
 // ==== functions end ====
 
 // ==== body calendar directive ====
                 var dataChanged = true; // initial setting, so data will be loaded
+                var noteButtonWidth = 60; // 6 characters
                 scope.init();
+//                nix();
             }
         };
 
-        function removeTime(date) {
-            return date.hour(0).minute(0).second(0).millisecond(0);
-        }
-
-        // get week number of first week: start.week()
-        // get week number of last week:  start.endof("month").week()
-        function buildMonth(scope, selectedType, startdate ) {
-            scope.weeks = [];
-            var currentMonth = scope.currentDate.clone().month();
-            var date = startdate.clone();
-            var startweek = startdate.week();
-            var endweek = startweek;
-            if (selectedType == "month") {
-//                endweek = scope.currentDate.clone().endOf("month").week();
-                endweek = startweek + 5;
-            }
-
-            for( var i=startweek; i <= endweek; i++){
-                scope.weeks.push({ days: buildWeek( date, currentMonth)} ) ;
-                date.add(1, "w");
-            }
-        }
-
-        function buildWeek(startdate, currentMonth) {
-            var days = [];
-            var date = startdate.clone();
-            for (var i = 0; i < 7; i++) {
-                days.push({
-                    name: date.format("dd").substring(0, 1),
-                    number: date.date(),
-                    isCurrentMonth: date.month() === currentMonth,
-                    isToday: date.isSame(new Date(), "day"),
-                    date: date
-                });
-                date = date.clone();
-                date.add(1, "d");
-            }
-            return days;
-        }
     })

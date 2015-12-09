@@ -3,33 +3,34 @@
  */
 angular.module('network.service', [])
     .factory('Network', ['$ionicPlatform', '$rootScope', '$cordovaNetwork', function($ionicPlatform, $rootScope, $cordovaNetwork) {
+        var self = this;
 
-        var type;
+        self.type = function () {
+            var result;
+            $ionicPlatform.ready( function () {
+                result = $cordovaNetwork.getNetwork();
+                console.log('network type= ' + result);
+            });
+            return result;
+        };
 
-        $ionicPlatform.ready( function () {
+        self.isOnline = function () {
+            var result;
+            $ionicPlatform.ready( function () {
+                result = $cordovaNetwork.isOnline();
+                console.log('isOnline= ' + result);
+            });
+            return result;
+        };
 
-            type = $cordovaNetwork.getNetwork()
-            console.log('net work type= ' + type);
-            var isOnline = $cordovaNetwork.isOnline()
-
-            var isOffline = $cordovaNetwork.isOffline()
-
-            // listen for Online event
-            $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-                var onlineState = networkState;
-            })
-
-            // listen for Offline event
-            $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-                var offlineState = networkState;
-            })
-
-        }, false);
-
-        return{
-            type: function () {
-                return type;
-            }
-        }
+        self.isOffline = function () {
+            var result;
+            $ionicPlatform.ready( function () {
+                result = $cordovaNetwork.isOffline();
+                console.log('isOffline= ' + result);
+            });
+            return result;
+        };
+        return self;
     }])
 ;

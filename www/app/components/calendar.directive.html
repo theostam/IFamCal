@@ -1,3 +1,4 @@
+
 <div class="padding" on-swipe-left="next()" on-swipe-right="previous()">
 
     <div class="period">{{selectedPeriod}}</div>
@@ -31,11 +32,11 @@
         </div>
 
         <div ng-cloak class="row" ng-repeat="week in weeks">
-            <button class="col"
+            <button class="col" id="notebutton"
                   ng-style="buttonheight"
                   ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }"
                   ng-click="select(day)" animation="slide-in-up"
-                  ng-repeat="day in week.days" style="font-size:x-small;white-space:pre-wrap;">{{ buttonText(day) }}
+                  ng-repeat="day in week.days" style="font-size:x-small;white-space:pre-wrap;" ng-bind="day.note">
             </button>
         </div>
     </div>
