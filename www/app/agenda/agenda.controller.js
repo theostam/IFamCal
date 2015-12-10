@@ -137,6 +137,7 @@ angular.module('Agenda', [])
                 }
             }
         }
+
         function displayNotes(){
             console.log('content Notes:');
             for( var i=0; i < vm.notes.length; i++) {

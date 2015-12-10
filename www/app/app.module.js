@@ -76,13 +76,22 @@ angular.module('starter',
         }
       })
       .state('app.network', {
-        url: "/network",
-        views: {
-          'appContent' :{
-            templateUrl: "app/settings/settings-network.html",
-            controller : "SettingsNetworkController as vm"
+          url: "/network",
+          views: {
+              'appContent' :{
+                  templateUrl: "app/settings/settings-network.html",
+                  controller : "SettingsNetworkController as vm"
+              }
           }
-        }
+      })
+      .state('app.reload', {
+          url: "/reload",
+          views: {
+              'appContent' :{
+                  templateUrl: "app/settings/settings-reload.html",
+                  controller : "SettingsNetworkController as vm"
+              }
+          }
       })
 
 
