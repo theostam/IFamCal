@@ -42,13 +42,13 @@ parameters:
                 scope.showWeek = function(){
                     scope.selectedType = 'week';
                     scope.selectedPeriod = 'Week '+ scope.currentDate.format("w, YYYY") ;
-                    getWidthOfNoteButton();
+//                    getWidthOfNoteButton();
                     scope.buildCalendar('week');
                 };
                 scope.showMonth= function(){
                     scope.selectedType = 'month';
                     scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");
-                    getWidthOfNoteButton();
+//                    getWidthOfNoteButton();
                     scope.buildCalendar('month');
                 };
 
@@ -97,7 +97,8 @@ parameters:
                     var dateYYMMDD = date.format('YYYYMMDD'); // moment( date ).format('YYYYMMDD');
                     var text = date.date();
                     var notesOfThisDay = [];
-                    var maxNrOfCharactersInCell = Math.floor(5 * noteButtonWidth / 10);
+                    var maxlines = Math.floor( noteButtonHeight / 20 );
+                    var maxNrOfCharactersInCell = Math.floor(maxlines * noteButtonWidth / 10);
 //                    console.log('maxNrOfCharactersInCell= '+maxNrOfCharactersInCell)
                     if (typeof scope.notes != 'undefined'){ // needed because view is often rendered before notes are ready
                         var nrOfNotes = scope.notes.length;
@@ -280,9 +281,11 @@ parameters:
                     if (selectedType == "month") {
                         start.startOf('month').startOf('week');
                         scope.buttonheight = { height: '100px' };
+                        noteButtonHeight = 100;
                     } else{
                         start.startOf('week');
                         scope.buttonheight = { height: '400px' };
+                        noteButtonHeight = 400;
                     }
 
                     buildMonth(scope, selectedType, start);
@@ -389,6 +392,7 @@ parameters:
 // ==== body calendar directive ====
                 var dataChanged = true; // initial setting, so data will be loaded
                 var noteButtonWidth = 60; // 6 characters
+                var noteButtonHeight ;
                 scope.init();
 //                nix();
             }
