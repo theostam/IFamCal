@@ -24,22 +24,23 @@ angular.module('Settings', [])
         }
     })
 
-    .controller('SettingsReloadController', function($rootScope, $scope, Localstorage) {
+    .controller('SettingsReloadController', function($rootScope, $scope, Localstorage, Notes) {
         var vm = this;
+
         vm.reloadNotes = function(){
             var lastUpdateTimestamp = moment("1970-01-01") ;
             var notesReceived = Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), 'root' ).then(
-                function(reloaddata){
+                function( reloaddata ){
 
                     var data = reloaddata.data.result;
                     if (data == undefined) return;
 // vm.notes hier niet bekend ophalen
-                    vm.notes = [];
+                    var notes = [];
                     for( var i=0; i < data.length; i++){
-                            vm.notes.push( data[i] );
+                            notes.push( data[i] );
                     }
-
                     console.log("data received: " + reloaddata.data.result );
+                    return notes;
                 },
                 function(data){
                     console.log( 'error' + reloaddata );
@@ -48,9 +49,10 @@ angular.module('Settings', [])
 
             notesReceived.then( function(data){
                 // save data in Local storage
-                Localstorage.set("notes", JSON.stringify(vm.notes));
+                Localstorage.set("notes", JSON.stringify( data ));
                 // set last update timestamp
-                Localstorage.set("lastUpdateTimestamp", lastMoficationDate.format("YYYYMMDD HHmmss"));
+                Localstorage.set("lastUpdateTimestamp", moment().format("YYYYMMDD HHmmss"));
+                $rootScope.$broadcast('notes_updated', [1,2,3]);
             } );
         }
     })

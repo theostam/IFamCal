@@ -6,15 +6,14 @@ parameters:
             That method will send it to the server. (But Not put in localstorage)
     selectedType: day, week or month    // TODO create constants
      */
-.directive("calendar", function($rootScope, $ionicModal, $ionicPlatform, Notes, Localstorage, $window, $document, $ionicHistory) {
+.directive("calendar", function($rootScope, $ionicModal, $ionicPlatform, Notes, Localstorage) {
         return {
             restrict: "E",
             templateUrl: "app/components/calendar.directive.html", //"templates/calendar.html",
             scope: {
-                notes: "="         // delete ?  get data by nextMonth( today - 1 month)
+                getnotes: "&"         // delete ?  get data by nextMonth( today - 1 month)
             },
             link: function(scope, $state) {
-
                 // ==== functions ====
                 scope.getNotesOfDay = function (date) {
                     scope.notesOfDay = [];
@@ -80,17 +79,6 @@ parameters:
                     }
                 };
                 // ==== functions end ====
-
-                //scope.$on('data_changed', function() {
-                //    console.log('change detect');
-                //    // After edit-note (only way to change data), reload the 'changed-day'
-                //    scope.getNotesByDay( scope.currentDate );
-                //    dataChanged = true;
-                //});
-                function getOrientation(){
-                    if (window.outerWidth > window.outerHeight) return 'landscape';
-                    return 'portrait';
-                }
 
                 function constructTextOfDay( date, noteButtonWidth ){
                     // TODO: make more efficient for a sorted notes array
@@ -316,6 +304,7 @@ parameters:
                 // get week number of first week: start.week()
                 // get week number of last week:  start.endof("month").week()
                 function buildMonth(scope, selectedType, startdate ) {
+                    scope.notes = scope.getnotes();
                     scope.weeks = [];
                     var currentMonth = scope.currentDate.clone().month();
                     var date = startdate.clone();
@@ -362,6 +351,7 @@ parameters:
                 scope.init = function(){
                     if (!scope.initDone){
                         scope.initDone = true;
+                        scope.notes = scope.getnotes();
                         scope.currentDate = moment();
                         scope.selectedType= 'month';  // default
                         scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");

@@ -89,7 +89,7 @@ angular.module('starter',
           views: {
               'appContent' :{
                   templateUrl: "app/settings/settings-reload.html",
-                  controller : "SettingsNetworkController as vm"
+                  controller : "SettingsReloadController as vm"
               }
           }
       })
