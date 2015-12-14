@@ -3,9 +3,10 @@ angular.module('Agenda', [])
 .controller('AgendaController', function(Notes, Localstorage, Network, $ionicPopup, $scope, $timeout) {
         var vm = this;
 
-        vm.getnotes = function(){
-            return Notes.list
-        }
+        vm.notes = Notes.list;
+        // the rest of thuis controller is getting - async - the notes from the server
+        // the $watch on notes in the directive will pick it up
+
         // check update on network allowed
 //        var updateOnlyOnWifi = Localstorage.get("updateOnlyOnWifi");
         updateOnlyOnWifi = false; // testing
@@ -25,7 +26,7 @@ angular.module('Agenda', [])
             var dateReceived = Notes.getLastModificationDate( Localstorage.get("username") );
         }
 
-//        vm.notes = Notes.list;
+
 
         // if lastModification date > lastUpdate date then get data from server
         dateReceived.then( function(data) {
@@ -34,7 +35,7 @@ angular.module('Agenda', [])
                 // get data
                 var notesReceived = Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username") );
                 notesReceived.then( function(){
-//                    vm.notes = Notes.list;
+                    vm.notes = Notes.list;
                 } );
             }
         } );
@@ -44,7 +45,7 @@ angular.module('Agenda', [])
             var lastUpdateTimestamp = moment("1970-01-01") ;
             if (tempString){
                 var tempDate = moment(tempString, "YYYYMMDD HHmmss") ;
-                if (tempDate.isValid()) lastUpdateTimestamp = temp;
+                if (tempDate.isValid()) lastUpdateTimestamp = tempDate;
             }
             return lastUpdateTimestamp;
         }

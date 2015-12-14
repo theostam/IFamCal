@@ -29,31 +29,32 @@ angular.module('Settings', [])
 
         vm.reloadNotes = function(){
             var lastUpdateTimestamp = moment("1970-01-01") ;
-            var notesReceived = Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), 'root' ).then(
-                function( reloaddata ){
+            Notes.remove();
+            Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), 'root' );
+            //.then(
+//                function( reloaddata ){
+//
+//                    var data = reloaddata.data.result;
+//                    if (data == undefined) return;
+//// vm.notes hier niet bekend ophalen
+//                    var notes = [];
+//                    for( var i=0; i < data.length; i++){
+//                            notes.push( data[i] );
+//                    }
+//                    console.log("data received: " + reloaddata.data.result );
+//                    return notes;
+//                },
+//                function(data){
+//                    console.log( 'error' + reloaddata );
+//                }
+//            );
 
-                    var data = reloaddata.data.result;
-                    if (data == undefined) return;
-// vm.notes hier niet bekend ophalen
-                    var notes = [];
-                    for( var i=0; i < data.length; i++){
-                            notes.push( data[i] );
-                    }
-                    console.log("data received: " + reloaddata.data.result );
-                    return notes;
-                },
-                function(data){
-                    console.log( 'error' + reloaddata );
-                }
-            );
-
-            notesReceived.then( function(data){
-                // save data in Local storage
-                Localstorage.set("notes", JSON.stringify( data ));
-                // set last update timestamp
-                Localstorage.set("lastUpdateTimestamp", moment().format("YYYYMMDD HHmmss"));
-                $rootScope.$broadcast('notes_updated', [1,2,3]);
-            } );
+            //notesReceived.then( function(data){
+            //    // save data in Local storage
+            //    Localstorage.set("notes", JSON.stringify( Notes.list ));
+            //    // set last update timestamp
+            //    Localstorage.set("lastUpdateTimestamp", moment().format("YYYYMMDD HHmmss"));
+            //} );
         }
     })
 

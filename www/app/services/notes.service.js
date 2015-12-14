@@ -15,6 +15,10 @@ angular.module('notes.service', ['constants'])
             self.list.push( note );
         };
 
+        self.remove = function(){
+            self.list = []
+        } ;
+
         self.save = function (note) {
             var request = $http({
                 method: "get",
@@ -30,9 +34,11 @@ angular.module('notes.service', ['constants'])
 
         self.getNotesSince = function( date, username ){
             console.log('service: get notes since ' + date);
-            var promise =  $http.get( "http://"+SERVERHOST+":"+SERVERPORT+"/notes?user="+username+"&date="+date+"&callback=JSON_CALLBACK").then(
+            var promise =  $http.get( "http://"+SERVERHOST+":"+SERVERPORT+"/notes?user="+username+"&date="+date).then(
                 function(data){
                     processNewNotes( data.data.result ); // testing: vm.notes = data;
+                    Localstorage.set("lastUpdateTimestamp", moment().format("YYYYMMDD HHmmss"));
+                    Localstorage.set("notes", JSON.stringify( self.list ));
                     displayNotes();
                     console.log("data received: " + data.data.result );
 //              return self.list;
@@ -60,7 +66,8 @@ angular.module('notes.service', ['constants'])
                 function(data){
                     var dateAsString = data.data.result;
                     var lastMoficationDate = moment(dateAsString, "YYYYMMDD HHmmss");
-                    console.log("data received: " + dateAsString);
+                    console.log("date received: " + dateAsString);
+
                     return lastMoficationDate;
                 },
                 function(data){

@@ -11,9 +11,15 @@ parameters:
             restrict: "E",
             templateUrl: "app/components/calendar.directive.html", //"templates/calendar.html",
             scope: {
-                getnotes: "&"         // delete ?  get data by nextMonth( today - 1 month)
+                notes: "="         // delete ?  get data by nextMonth( today - 1 month)
             },
             link: function(scope, $state) {
+                // watch the notes - async - retrieved from server
+                scope.$watch('notes', function(newVal) {
+                    if(newVal) {
+                        scope.buildCalendar(scope.selectedType);
+                    }
+                }, true);
                 // ==== functions ====
                 scope.getNotesOfDay = function (date) {
                     scope.notesOfDay = [];
@@ -304,7 +310,7 @@ parameters:
                 // get week number of first week: start.week()
                 // get week number of last week:  start.endof("month").week()
                 function buildMonth(scope, selectedType, startdate ) {
-                    scope.notes = scope.getnotes();
+//                    scope.notes = scope.getnotes();
                     scope.weeks = [];
                     var currentMonth = scope.currentDate.clone().month();
                     var date = startdate.clone();
@@ -351,7 +357,7 @@ parameters:
                 scope.init = function(){
                     if (!scope.initDone){
                         scope.initDone = true;
-                        scope.notes = scope.getnotes();
+//                        scope.notes = scope.getnotes();
                         scope.currentDate = moment();
                         scope.selectedType= 'month';  // default
                         scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");
