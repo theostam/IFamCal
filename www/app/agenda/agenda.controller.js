@@ -4,6 +4,9 @@ angular.module('Agenda', [])
         var vm = this;
 
         vm.notes = Notes.list;
+        vm.getnotes = function(){
+            return Notes.list
+        };
         // the rest of thuis controller is getting - async - the notes from the server
         // the $watch on notes in the directive will pick it up
 
