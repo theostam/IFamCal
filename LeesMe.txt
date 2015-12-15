@@ -33,5 +33,14 @@ Update your project to the latest version of Cordova:
 This command updates the cordova.js and other Cordova-dependent files to the latest version of Cordova.
 
 $ cordova platform update [ios/android]
+========================================================================================================
+TODO's
+url server naar settings
+doc. github
+web versie
+icon voor de app
+autorisatie
+
+
 
 
