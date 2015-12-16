@@ -29,6 +29,9 @@ angular.module('notes.service', ['constants'])
                 error(function (data, status, headers, config) {
                     console.log('error: ' + status);
                 });
+            self.add( note );
+            // save data in Local storage
+            Localstorage.set("notes", JSON.stringify( self.list ));
 
         } ;
 

@@ -121,9 +121,6 @@ parameters:
                 scope.saveNote = function (){
                     if ( typeof(scope.currentNote.changeDate) == "undefined") { // new note
                         scope.currentNote.changeDate = moment(); // only marker
-                        scope.notes.push( scope.currentNote );
-                        // save data in Local storage
-                        Localstorage.set("notes", JSON.stringify(scope.notes));
                     }
                     Notes.save( scope.currentNote );
                     scope.getNotesOfDay(scope.currentDate);
