@@ -1,7 +1,7 @@
 
 <div class="padding" on-swipe-left="next()" on-swipe-right="previous()">
 
-    <div class="period">{{selectedPeriod}}</div>
+    <div class="period" ng-bind="getSelectedPeriod()"></div>
 
     <div class="button-bar">
         <div class="col text-left">

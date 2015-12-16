@@ -22,69 +22,108 @@ parameters:
                     }
                 }, true);
                 // ==== functions ====
-                scope.getNotesOfDay = function (date) {
-                    scope.notesOfDay = [];
-                    var dateYYYYMMDD = date.format('YYYYMMDD');
-                    for (var i = 0; i < scope.notes.length; i++) {
-                        if (scope.notes[i].date == dateYYYYMMDD) {
-                            scope.notesOfDay.push( scope.notes[i] );
-                        }
+
+                scope.getSelectedPeriod = function(){
+                    if (scope.selectedType == 'day'){
+                        return scope.currentDate.format("dddd, MMMM Do YYYY")
+                    } else if (scope.selectedType == 'week'){
+                        return 'Week '+ scope.currentDate.format("w, YYYY")
+                    } else if (scope.selectedType == 'month'){
+                        return scope.currentDate.format("MMMM, YYYY")
                     }
                 };
 
                 scope.select = function(day) {
                     scope.selectedType = 'day';
                     scope.currentDate = day.date;
-                    scope.selectedPeriod = scope.currentDate.format("dddd, MMMM Do YYYY");
-                    scope.getNotesOfDay( scope.currentDate );
+                    scope.buildCalendar(scope.selectedType);
+//                    scope.getNotesOfDay( scope.currentDate );
                 };
 
                 scope.showToday = function(){
                     scope.selectedType = 'day';
                     scope.currentDate = moment();
-                    scope.selectedPeriod = scope.currentDate.format("dddd, MMMM Do YYYY");
-                    scope.getNotesOfDay( scope.currentDate );
+                    scope.buildCalendar(scope.selectedType);
+//                    scope.getNotesOfDay( scope.currentDate );
                 };
                 scope.showWeek = function(){
                     scope.selectedType = 'week';
-                    scope.selectedPeriod = 'Week '+ scope.currentDate.format("w, YYYY") ;
-//                    getWidthOfNoteButton();
-                    scope.buildCalendar('week');
+                    scope.buildCalendar(scope.selectedType);
+//                    scope.buildCalendar('week');
                 };
                 scope.showMonth= function(){
                     scope.selectedType = 'month';
-                    scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");
-//                    getWidthOfNoteButton();
-                    scope.buildCalendar('month');
+                    scope.buildCalendar(scope.selectedType);
+//                    scope.buildCalendar('month');
                 };
-
-                //scope.buttonText = function(day) {
-                //    var text = day.number;
-                //    text = text + constructTextOfDay( day.date );
-                //    return text;
-                //};
 
                 scope.next = function() {
                     if (scope.selectedType == 'day'){
-                        scope.swipeLeftDay();
+                        scope.swipe(1, 'd');
+//                        scope.swipeLeftDay();
                     } else if (scope.selectedType == 'week'){
-                        scope.swipeLeftWeek();
+                        scope.swipe(1, 'weeks');
+//                        scope.swipeLeftWeek();
                     }
                     else if (scope.selectedType == 'month'){
-                        scope.swipeLeftMonth();
+                        scope.swipe(1, 'M');
+//                        scope.swipeLeftMonth();
                     }
                 };
 
                 scope.previous = function() {
                     if (scope.selectedType == 'day'){
-                        scope.swipeRightDay();
+                        scope.swipe(-1, 'd');
+//                        scope.swipeRightDay();
                     } else if (scope.selectedType == 'week'){
-                        scope.swipeRightWeek();
+                        scope.swipe(-1, 'weeks');
+//                        scope.swipeRightWeek();
                     }
                     else if (scope.selectedType == 'month'){
-                        scope.swipeRightMonth();
+                        scope.swipe(-1, 'M');
+//                        scope.swipeRightMonth();
                     }
                 };
+                scope.swipe = function(numberDaysWeeksMonths, dayWeekOrMonth){
+                    // numberDaysWeeksMonths is -1 or +1, dayWeekOrMonth is 'd', 'weeks' or 'M'
+                    scope.currentDate.add(numberDaysWeeksMonths, dayWeekOrMonth);
+                    scope.buildCalendar(scope.selectedType);
+                }
+//                scope.swipeLeftDay = function () {
+//                    scope.currentDate.add(1, 'd');
+//                    scope.buildCalendar(scope.selectedType);
+////                    scope.getNotesOfDay(scope.currentDate);
+//                };
+//
+//                scope.swipeRightDay = function () {
+//                    scope.currentDate.add(-1, 'd');
+//                    scope.buildCalendar(scope.selectedType);
+////                    scope.getNotesOfDay(scope.currentDate);
+//                };
+//
+//                scope.swipeLeftWeek = function () {
+//                    scope.currentDate.add(1, 'weeks');
+//                    scope.buildCalendar(scope.selectedType);
+//                    //buildWeekOrMonth(scope);
+//                };
+//
+//                scope.swipeRightWeek = function () {
+//                    scope.currentDate.add(-1, 'weeks');
+//                    scope.buildCalendar(scope.selectedType);
+////                    buildWeekOrMonth(scope);
+//                };
+//
+//                scope.swipeLeftMonth = function () {
+//                    scope.currentDate.add(1, 'M');
+//                    scope.buildCalendar(scope.selectedType);
+////                    buildWeekOrMonth(scope);
+//                };
+//
+//                scope.swipeRightMonth = function () {
+//                    scope.currentDate.add(-1, 'M');
+//                    scope.buildCalendar(scope.selectedType);
+////                    buildWeekOrMonth(scope);
+//                };
                 // ==== functions end ====
 
                 function constructTextOfDay( date, noteButtonWidth ){
@@ -126,45 +165,20 @@ parameters:
                     scope.getNotesOfDay(scope.currentDate);
                     scope.modal.hide();
                     console.log("save note");
-//                    $rootScope.$broadcast('data_changed');
                 };
 
-                scope.swipeLeftDay = function () {
-                    scope.currentDate.add(1, 'd');
-                    scope.getNotesOfDay(scope.currentDate);
-                    scope.selectedPeriod = scope.currentDate.format("dddd, MMMM Do YYYY");
+                scope.getNotesOfDay = function (date) {
+                    scope.notesOfDay = [];
+                    var dateYYYYMMDD = date.format('YYYYMMDD');
+                    for (var i = 0; i < scope.notes.length; i++) {
+                        if (scope.notes[i].date == dateYYYYMMDD) {
+                            scope.notesOfDay.push( scope.notes[i] );
+                        }
+                    }
                 };
 
-                scope.swipeRightDay = function () {
-                    scope.currentDate.add(-1, 'd');
-                    scope.getNotesOfDay(scope.currentDate);
-                    scope.selectedPeriod = scope.currentDate.format("dddd, MMMM Do YYYY");
-                };
-
-                scope.swipeLeftWeek = function () {
-                    scope.currentDate.add(1, 'weeks');
-                    buildWeekOrMonth(scope);
-                    scope.selectedPeriod = 'Week '+ scope.currentDate.format("w, YYYY") ;
-                };
-
-                scope.swipeRightWeek = function () {
-                    scope.currentDate.add(-1, 'weeks');
-                    buildWeekOrMonth(scope);
-                    scope.selectedPeriod = 'Week '+ scope.currentDate.format("w, YYYY") ;
-                };
-
-                scope.swipeLeftMonth = function () {
-                    scope.currentDate.add(1, 'M');
-                    buildWeekOrMonth(scope);
-                    scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");
-                };
-
-                scope.swipeRightMonth = function () {
-                    scope.currentDate.add(-1, 'M');
-                    buildWeekOrMonth(scope);
-                    scope.selectedPeriod = scope.currentDate.format("MMMM, YYYY");
-                };
                 scope.getNoteOfUser = function (username) {
+                    scope.getNotesOfDay(scope.currentDate);
                     for (var i = 0; i < scope.notesOfDay.length; i++) {
                         if (scope.notesOfDay[i].name === username) {
                             return( scope.notesOfDay[i] );
@@ -268,6 +282,11 @@ parameters:
 
 
                 scope.buildCalendar = function( selectedType ){
+                    if (selectedType == "day") {
+                        scope.getNotesOfDay(scope.currentDate);
+                        return ;
+                    }
+
                     scope.currentDate = removeTime(scope.currentDate || moment());
                     var start = scope.currentDate.clone();
                     if (selectedType == "month") {
@@ -284,16 +303,16 @@ parameters:
 
                 }
 
-                function buildWeekOrMonth(){
-                    var next = scope.currentDate.clone();
-                    if (scope.selectedType == "month") {
-                        next.startOf('month').startOf('week');
-                    } else{
-                        next.startOf('week');
-                    }
-
-                    buildMonth(scope, scope.selectedType, next );
-                }
+                //function buildWeekOrMonth(){
+                //    var next = scope.currentDate.clone();
+                //    if (scope.selectedType == "month") {
+                //        next.startOf('month').startOf('week');
+                //    } else{
+                //        next.startOf('week');
+                //    }
+                //
+                //    buildMonth(scope, scope.selectedType, next );
+                //}
 
                 function getWidthOfNoteButton(){
                     var test = document.getElementById("notebutton");
@@ -392,4 +411,4 @@ parameters:
             }
         };
 
-    })
+    });
