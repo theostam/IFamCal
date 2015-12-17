@@ -290,11 +290,11 @@ parameters:
                     scope.currentDate = removeTime(scope.currentDate || moment());
                     var start = scope.currentDate.clone();
                     if (selectedType == "month") {
-                        start.startOf('month').startOf('week');
+                        start.startOf('month').startOf('isoweek');
                         scope.buttonheight = { height: '100px' };
                         noteButtonHeight = 100;
                     } else{
-                        start.startOf('week');
+                        start.startOf('isoweek');
                         scope.buttonheight = { height: '400px' };
                         noteButtonHeight = 400;
                     }
@@ -354,6 +354,7 @@ parameters:
                             number: date.date(),
                             isCurrentMonth: date.month() === currentMonth,
                             isToday: date.isSame(new Date(), "day"),
+                            weekend: (i > 4),
                             date: date
                         });
                         date = date.clone();

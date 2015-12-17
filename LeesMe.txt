@@ -39,8 +39,8 @@ url server naar settings
 doc. github
 web versie
 icon voor de app
-autorisatie
-
+autorisatie (zie voor basic auth:  http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx)
+calender sunday helemaal rechts plaatsen
 
 
 

@@ -1,4 +1,4 @@
-angular.module('notes.service', ['constants'])
+angular.module('notes.service', [])
 
 .factory('Notes', function( $http, Localstorage, SERVERHOST, SERVERPORT) {
         var self = this;
@@ -20,6 +20,8 @@ angular.module('notes.service', ['constants'])
         } ;
 
         self.save = function (note) {
+            var SERVERHOST = Localstorage.get("hostname");
+            var SERVERPORT = Localstorage.get("portnumber");
             var request = $http({
                 method: "get",
                 url: "http://"+SERVERHOST+":"+SERVERPORT+"/notes/saveorupdate/"+note.date+"/"+note.name+"/"+note.text
@@ -37,6 +39,8 @@ angular.module('notes.service', ['constants'])
 
         self.getNotesSince = function( date, username ){
             console.log('service: get notes since ' + date);
+            var SERVERHOST = Localstorage.get("hostname");
+            var SERVERPORT = Localstorage.get("portnumber");
             var promise =  $http.get( "http://"+SERVERHOST+":"+SERVERPORT+"/notes?user="+username+"&date="+date).then(
                 function(data){
                     processNewNotes( data.data.result ); // testing: vm.notes = data;
@@ -54,6 +58,8 @@ angular.module('notes.service', ['constants'])
         };
 
         self.getLastModificationDate = function ( username ) {
+            var SERVERHOST = Localstorage.get("hostname");
+            var SERVERPORT = Localstorage.get("portnumber");
             var req = {
                 method: 'get',
                 url: "http://"+SERVERHOST+":"+SERVERPORT+"/notes/lastmodificationdate?user="+username,

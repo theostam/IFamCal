@@ -3,6 +3,11 @@
     color:darkblue;
 }
 
+.weekend {
+    background:#d6f5d6; //lightgreen;
+//    color:lightgreen;
+}
+
 .different-month {
      color:#C0C0C0;
  }

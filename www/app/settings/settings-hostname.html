@@ -1,0 +1,21 @@
+<ion-view view-title="Server">
+  <ion-content>
+    <ion-list>
+      <div class="list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Server Hostname</span>
+          <input type="text" ng-model="vm.hostname" placeholder="yourserver.com">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Server Portnumber</span>
+          <input type="text" ng-model="vm.portnumber" placeholder="80">
+        </label>
+      </div>
+    </ion-list>
+    <div style="padding: 5px;">
+    <button class="button button-block button-positive" ng-click="vm.save()">
+      Save
+    </button>
+    </div>
+  </ion-content>
+</ion-view>

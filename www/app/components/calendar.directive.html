@@ -22,19 +22,19 @@
     </div>
     <div ng-show="selectedType != 'day'">
         <div class="row">
-            <button class="col button button-clear button-small button-positive">Sun</button>
             <button class="col button button-clear button-small button-positive">Mon</button>
             <button class="col button button-clear button-small button-positive">Tue</button>
             <button class="col button button-clear button-small button-positive">Wed</button>
             <button class="col button button-clear button-small button-positive">Thu</button>
             <button class="col button button-clear button-small button-positive">Fri</button>
             <button class="col button button-clear button-small button-positive">Sat</button>
+            <button class="col button button-clear button-small button-positive">Sun</button>
         </div>
 
         <div ng-cloak class="row" ng-repeat="week in weeks">
             <button class="col" id="notebutton"
                   ng-style="buttonheight"
-                  ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }"
+                  ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected), weekend: day.weekend }"
                   ng-click="select(day)" animation="slide-in-up"
                   ng-repeat="day in week.days" style="font-size:x-small;white-space:pre-wrap;" ng-bind="day.note">
             </button>

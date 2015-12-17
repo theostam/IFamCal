@@ -93,6 +93,15 @@ angular.module('starter',
               }
           }
       })
+      .state('app.server', {
+          url: "/server",
+          views: {
+              'appContent' :{
+                  templateUrl: "app/settings/settings-hostname.html",
+                  controller : "SettingsServerUrlController as vm"
+              }
+          }
+      })
 
 
   // if none of the above states are matched, use this as the fallback

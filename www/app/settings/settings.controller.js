@@ -31,31 +31,16 @@ angular.module('Settings', [])
             var lastUpdateTimestamp = moment("1970-01-01") ;
             Notes.remove();
             Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), 'root' );
-            //.then(
-//                function( reloaddata ){
-//
-//                    var data = reloaddata.data.result;
-//                    if (data == undefined) return;
-//// vm.notes hier niet bekend ophalen
-//                    var notes = [];
-//                    for( var i=0; i < data.length; i++){
-//                            notes.push( data[i] );
-//                    }
-//                    console.log("data received: " + reloaddata.data.result );
-//                    return notes;
-//                },
-//                function(data){
-//                    console.log( 'error' + reloaddata );
-//                }
-//            );
-
-            //notesReceived.then( function(data){
-            //    // save data in Local storage
-            //    Localstorage.set("notes", JSON.stringify( Notes.list ));
-            //    // set last update timestamp
-            //    Localstorage.set("lastUpdateTimestamp", moment().format("YYYYMMDD HHmmss"));
-            //} );
         }
     })
 
+    .controller('SettingsServerUrlController', function( Localstorage ) {
+        var vm = this;
+        vm.hostname = Localstorage.get("hostname");
+        vm.portnumber = Localstorage.get("portnumber");
+        vm.save = function() {
+            Localstorage.set("hostname", vm.hostname);
+            Localstorage.set("portnumber", vm.portnumber);
+        };
+    })
 ;

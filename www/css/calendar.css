@@ -20,6 +20,7 @@ calendar {
     border:solid 1px @border-colour;
     margin-bottom:10px;
 
+@weekend-colour:#2875C7;
 @secondary-colour:#2875C7;
 @spacing:10px;
 @icon-width:40px;
@@ -104,6 +105,11 @@ calendar {
 
 &.selected {
      background:@secondary-colour;
+     color:white;
+ }
+
+&.weekend {
+     background:@weekend-colour;
      color:white;
  }
 }
