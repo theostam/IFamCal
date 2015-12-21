@@ -56,7 +56,13 @@ angular.module('starter',
             templateUrl: "app/agenda/agenda.html",
             controller : "AgendaController as vm"
           }
-        }
+        },
+          resolve: {
+              notes: function(Notes, Localstorage){
+                  var lastUpdateTimestamp = getLastUpdateTimestamp(Localstorage) ;
+                  return Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username") );
+              }
+          }
       })
       .state('app.settings', {
         url: "/settings",
@@ -107,4 +113,15 @@ angular.module('starter',
   // if none of the above states are matched, use this as the fallback
       $urlRouterProvider.otherwise('/app/calendar');
 
-});
+    // functions for resolve
+        function getLastUpdateTimestamp(Localstorage){
+            var tempString = Localstorage.get("lastUpdateTimestamp");
+            var lastUpdateTimestamp = moment("1970-01-01") ;
+            if (tempString){
+                var tempDate = moment(tempString, "YYYYMMDD HHmmss") ;
+                if (tempDate.isValid()) lastUpdateTimestamp = tempDate;
+            }
+            return lastUpdateTimestamp;
+        }
+
+    });

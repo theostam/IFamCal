@@ -48,7 +48,7 @@ angular.module('notes.service', [])
                     Localstorage.set("notes", JSON.stringify( self.list ));
                     displayNotes();
                     console.log("data received: " + data.data.result );
-//              return self.list;
+                    return self.list;
                 },
                 function(data){
                     console.log( 'error' + data );
@@ -63,12 +63,12 @@ angular.module('notes.service', [])
             var req = {
                 method: 'get',
                 url: "http://"+SERVERHOST+":"+SERVERPORT+"/notes/lastmodificationdate?user="+username,
-                headers: {
-                    'Authorization': 'Basic aapnootmies'
-                }
+                //headers: {
+                //    'Authorization': 'Basic aapnootmies'
+                //}
             };
             var config = {headers: {
-                'Authorization': 'Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ=='
+                //'Authorization': 'Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ=='
             }
             };
             var promise =  $http(req, config).then(

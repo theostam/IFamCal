@@ -1,57 +1,62 @@
 angular.module('Agenda', [])
 
-.controller('AgendaController', function(Notes, Localstorage, Network, $ionicPopup, $scope, $timeout) {
+    .controller('AgendaController', function(notes, Network, $ionicPopup, $scope, $timeout) {
+//        .controller('AgendaController', function(nuts, Notes, Localstorage, Network, $ionicPopup, $scope, $timeout) {
         var vm = this;
 
-        vm.notes = Notes.list;
-        vm.getnotes = function(){
-            return Notes.list
-        };
-        // the rest of thuis controller is getting - async - the notes from the server
-        // the $watch on notes in the directive will pick it up
-
-        // check update on network allowed
-//        var updateOnlyOnWifi = Localstorage.get("updateOnlyOnWifi");
-        updateOnlyOnWifi = false; // testing
-
-        // if update on network not allowed, check wifi
         var connectionType = checkConnection();  // NONE, WIFI or CELL
-        //        showConnectionStatus( connectionType );
+                showConnectionStatus( connectionType );
+        vm.notes = notes ;
 
-        // if update on network allowed -and connected-, or on wifi,
-        //      get last modification date from server
-        //      get last update timestamp
-        if (connectionType == 'WIFI' || (connectionType == 'CELL' && !updateOnlyOnWifi) ){
-            var lastUpdateTimestamp = getLastUpdateTimestamp() ;
-
-            var lastMoficationDate = moment("1970-01-01"); // testing
-            //  get last modification date from server
-            var dateReceived = Notes.getLastModificationDate( Localstorage.get("username") );
-        }
-
-
-
-        // if lastModification date > lastUpdate date then get data from server
-        dateReceived.then( function(data) {
-            lastMoficationDate = data;
-            if (moment(lastMoficationDate).isAfter(lastUpdateTimestamp)) {
-                // get data
-                var notesReceived = Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username") );
-                notesReceived.then( function(){
-                    vm.notes = Notes.list;
-                } );
-            }
-        } );
-
-        function getLastUpdateTimestamp(){
-            var tempString = Localstorage.get("lastUpdateTimestamp");
-            var lastUpdateTimestamp = moment("1970-01-01") ;
-            if (tempString){
-                var tempDate = moment(tempString, "YYYYMMDD HHmmss") ;
-                if (tempDate.isValid()) lastUpdateTimestamp = tempDate;
-            }
-            return lastUpdateTimestamp;
-        }
+//        vm.notes = Notes.list;
+        vm.getnotes = function(){
+            return vm.notes // Notes.list
+        };
+//        // the rest of thuis controller is getting - async - the notes from the server
+//        // the $watch on notes in the directive will pick it up
+//
+//        // check update on network allowed
+////        var updateOnlyOnWifi = Localstorage.get("updateOnlyOnWifi");
+//        updateOnlyOnWifi = false; // testing
+//
+//        // if update on network not allowed, check wifi
+//        var connectionType = checkConnection();  // NONE, WIFI or CELL
+//        //        showConnectionStatus( connectionType );
+//
+//        // if update on network allowed -and connected-, or on wifi,
+//        //      get last modification date from server
+//        //      get last update timestamp
+//        if (connectionType == 'WIFI' || (connectionType == 'CELL' && !updateOnlyOnWifi) ){
+//            var lastUpdateTimestamp = getLastUpdateTimestamp() ;
+//
+//            var lastMoficationDate = moment("1970-01-01"); // testing
+//            //  get last modification date from server
+//            var dateReceived = Notes.getLastModificationDate( Localstorage.get("username") );
+//        }
+//
+//
+//
+//        // if lastModification date > lastUpdate date then get data from server
+//        dateReceived.then( function(data) {
+//            lastMoficationDate = data;
+//            if (moment(lastMoficationDate).isAfter(lastUpdateTimestamp)) {
+//                // get data
+//                var notesReceived = Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username") );
+//                notesReceived.then( function(){
+//                    vm.notes = Notes.list;
+//                } );
+//            }
+//        } );
+//
+//        function getLastUpdateTimestamp(){
+//            var tempString = Localstorage.get("lastUpdateTimestamp");
+//            var lastUpdateTimestamp = moment("1970-01-01") ;
+//            if (tempString){
+//                var tempDate = moment(tempString, "YYYYMMDD HHmmss") ;
+//                if (tempDate.isValid()) lastUpdateTimestamp = tempDate;
+//            }
+//            return lastUpdateTimestamp;
+//        }
 
         function checkConnection () {
             if (window.Connection) {
@@ -78,6 +83,7 @@ angular.module('Agenda', [])
                 message = 'Connected on Network';
             }
             var connPopup = $ionicPopup.show({
+                cssClass: 'fade',
                 title: "Connection status",
                 content: message + ' type=' + connectionType
             });
