@@ -89,9 +89,7 @@ angular.module('Agenda', [])
                 if (popupElements.length) {
                     $scope.popupElement = angular.element(popupElements[0]);
                     $scope.popupElement.addClass('animated');
-                    $scope.popupElement.addClass('popup-dur3');
-//                    $scope.popupElement.addClass('hinge');
-
+//                    $scope.popupElement.addClass('popup-dur3');
                     $scope.popupElement.addClass(animation)
                 };
             }, 1);
@@ -105,11 +103,15 @@ angular.module('Agenda', [])
                 var popupElements = document.getElementsByClassName("popup-container");
                 if (popupElements.length) {
                     $scope.popupElement = angular.element(popupElements[0]);
-                    $scope.popupElement.removeClass('fadeIn');
+//                    $scope.popupElement.removeClass('fadeIn');
                     $scope.popupElement.addClass('fadeOut');
                 }
-                connPopup.close(); //close the popup after 3 seconds for some reason
-            }, 5000);
+
+                $timeout( function(){
+                    connPopup.close(); //close the popup after 3 seconds for some reason
+                }, 1000); // after some time of fading close the popup
+
+            }, 3000); // show the popup this time
         }
 
     })

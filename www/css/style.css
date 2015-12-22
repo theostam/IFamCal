@@ -28,7 +28,7 @@
 
 .popup-dur3 {
     -webkit-animation-duration: 15s;
-    -webkit-animation-delay: 1s;
+    /*-webkit-animation-delay: 1s;*/
     /*-webkit-animation-iteration-count: infinite;*/
 }
 
