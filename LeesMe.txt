@@ -35,12 +35,31 @@ This command updates the cordova.js and other Cordova-dependent files to the lat
 $ cordova platform update [ios/android]
 ========================================================================================================
 TODO's
-url server naar settings
+DONE: url server naar settings
 doc. github
 web versie
 icon voor de app
 autorisatie (zie voor basic auth:  http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx)
-calender sunday helemaal rechts plaatsen
+DONE: calender sunday helemaal rechts plaatsen
+uitzoeken hoe bower en package.json werken
+
+login code:
+http://subashselvaraj.com/2015/02/15/login-based-application-with-ionic-framework-connect-to-websql-part1/
+
+ui-router intro:
+http://txt.fliglio.com/2013/05/angularjs-state-management-with-ui-router/
+
+promises:
+http://www.webdeveasy.com/javascript-promises-and-angularjs-q-service/
+http://www.dwmkerr.com/promises-in-angularjs-the-definitive-guide/
+
+modal:
+http://www.dwmkerr.com/the-only-angularjs-modal-service-youll-ever-need/
+http://stackoverflow.com/questions/8708945/how-to-position-text-over-an-image-in-css
+
+
+
+
 
 
 
