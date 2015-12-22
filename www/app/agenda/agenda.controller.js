@@ -82,14 +82,34 @@ angular.module('Agenda', [])
             } else if (connectionType == 'CELL'){
                 message = 'Connected on Network';
             }
+
+            $timeout(function(){
+                var animation = 'fadeIn';
+                var popupElements = document.getElementsByClassName("popup-container");
+                if (popupElements.length) {
+                    $scope.popupElement = angular.element(popupElements[0]);
+                    $scope.popupElement.addClass('animated');
+                    $scope.popupElement.addClass('popup-dur3');
+//                    $scope.popupElement.addClass('hinge');
+
+                    $scope.popupElement.addClass(animation)
+                };
+            }, 1);
+
             var connPopup = $ionicPopup.show({
-                cssClass: 'fade',
                 title: "Connection status",
                 content: message + ' type=' + connectionType
             });
+
             $timeout(function() {
+                var popupElements = document.getElementsByClassName("popup-container");
+                if (popupElements.length) {
+                    $scope.popupElement = angular.element(popupElements[0]);
+                    $scope.popupElement.removeClass('fadeIn');
+                    $scope.popupElement.addClass('fadeOut');
+                }
                 connPopup.close(); //close the popup after 3 seconds for some reason
-            }, 2000);
+            }, 5000);
         }
 
     })

@@ -6,7 +6,7 @@
 // 'starter.services' is found in services NOT USED.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
-        ['ionic',
+        [   'ionic',
             'constants',
             'MainView',
             'Settings',
@@ -14,7 +14,9 @@ angular.module('starter',
             'notes.service',
             'localstorage.service',
             'network.service',
+            'auth.service',
             'Calendar',
+            'Login',
             'ngCordova'
         ])
 
@@ -39,6 +41,17 @@ angular.module('starter',
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
+      .state('login', {
+          url: "/login",
+          views: {
+              'menu' : {
+                  templateUrl: "app/login/login.html",
+                  controller: 'LoginController'
+              }
+          },
+          //templateUrl: "app/login/login.html",
+          //controller: 'LoginController'
+      })
       .state('app', {
         url: "/app",
         abstract: true,
@@ -47,6 +60,11 @@ angular.module('starter',
             templateUrl: "app/layout/mainView.html",
             controller: "MainViewController"
           }
+        },
+        onEnter: function($state, Auth){
+              if(!Auth.isLoggedIn()){
+                  $state.go('login');
+              }
         }
       })
       .state('app.calendar', {
@@ -111,7 +129,8 @@ angular.module('starter',
 
 
   // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/app/calendar');
+//        $urlRouterProvider.otherwise('/app/calendar');
+        $urlRouterProvider.otherwise('/login');
 
     // functions for resolve
         function getLastUpdateTimestamp(Localstorage){

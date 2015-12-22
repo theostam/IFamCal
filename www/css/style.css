@@ -26,6 +26,12 @@
     font-weight:bold
 }
 
+.popup-dur3 {
+    -webkit-animation-duration: 15s;
+    -webkit-animation-delay: 1s;
+    /*-webkit-animation-iteration-count: infinite;*/
+}
+
 .fade {list-style: none;animation-duration:2s}
 
 .fade.ng-enter,
