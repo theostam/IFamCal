@@ -49,8 +49,6 @@ angular.module('starter',
                   controller: 'LoginController'
               }
           },
-          //templateUrl: "app/login/login.html",
-          //controller: 'LoginController'
       })
       .state('app', {
         url: "/app",
