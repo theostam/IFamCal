@@ -8,6 +8,7 @@ angular.module('starter',
             'localstorage.service',
             'network.service',
             'auth.service',
+            'notification.service',
             'Calendar',
             'Login',
             'ngCordova'
