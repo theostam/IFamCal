@@ -39,12 +39,18 @@ DONE: url server naar settings
 doc. github
 web versie
 icon voor de app
-autorisatie (zie voor basic auth:  http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx)
 DONE: calender sunday helemaal rechts plaatsen
 uitzoeken hoe bower en package.json werken
+success en erro vervangen door then
+uitzoeken: ngMessage en ngAnimate voor tonen van messages
+
+========================================================================================================
 
 login code:
 http://subashselvaraj.com/2015/02/15/login-based-application-with-ionic-framework-connect-to-websql-part1/
+
+autorisatie (zie voor basic auth):
+http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx
 
 ui-router intro:
 http://txt.fliglio.com/2013/05/angularjs-state-management-with-ui-router/
@@ -56,6 +62,10 @@ http://www.dwmkerr.com/promises-in-angularjs-the-definitive-guide/
 modal:
 http://www.dwmkerr.com/the-only-angularjs-modal-service-youll-ever-need/
 http://stackoverflow.com/questions/8708945/how-to-position-text-over-an-image-in-css
+
+toast
+https://blog.nraboy.com/2014/09/show-native-toast-notifications-using-ionic-framework/
+
 
 
 

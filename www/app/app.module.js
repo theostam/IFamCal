@@ -1,10 +1,3 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services NOT USED.js
-// 'starter.controllers' is found in controllers.js
 angular.module('starter',
         [   'ionic',
             'constants',
@@ -48,7 +41,7 @@ angular.module('starter',
                   templateUrl: "app/login/login.html",
                   controller: 'LoginController'
               }
-          },
+          }
       })
       .state('app', {
         url: "/app",
@@ -58,12 +51,13 @@ angular.module('starter',
             templateUrl: "app/layout/mainView.html",
             controller: "MainViewController"
           }
-        },
-        onEnter: function($state, Auth){
-              if(!Auth.isLoggedIn()){
-                  $state.go('login');
-              }
         }
+        //  ,
+        //onEnter: function($state, Auth){
+        //      if(!Auth.isLoggedIn()){
+        //          $state.go('login');
+        //      }
+        //}
       })
       .state('app.calendar', {
         url: "/calendar",
@@ -74,10 +68,24 @@ angular.module('starter',
           }
         },
           resolve: {
-              notes: function(Notes, Localstorage){
-                  var lastUpdateTimestamp = getLastUpdateTimestamp(Localstorage) ;
-                  return Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username") );
+              notes: function(Auth, Notes, Localstorage){
+                  // first login
+                  var promise = Auth.login(Localstorage.get("username"), Localstorage.get("password")).then(
+                      function(){
+                          var lastUpdateTimestamp = getLastUpdateTimestamp(Localstorage);
+                          return Notes.getNotesSince(lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username"))
+                      },
+                      function(){
+                          return Notes.getList()
+                      }
+                  );
+                  return promise
               }
+              //,
+              //notes: function(Notes, Localstorage){
+              //    var lastUpdateTimestamp = getLastUpdateTimestamp(Localstorage) ;
+              //    return Notes.getNotesSince( lastUpdateTimestamp.format("YYYYMMDD"), Localstorage.get("username") );
+              //}
           }
       })
       .state('app.settings', {
@@ -123,12 +131,12 @@ angular.module('starter',
                   controller : "SettingsServerUrlController as vm"
               }
           }
-      })
+      });
 
 
   // if none of the above states are matched, use this as the fallback
-//        $urlRouterProvider.otherwise('/app/calendar');
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise('/app/calendar');
+//        $urlRouterProvider.otherwise('/login');
 
     // functions for resolve
         function getLastUpdateTimestamp(Localstorage){

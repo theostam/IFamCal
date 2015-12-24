@@ -26,13 +26,19 @@
     font-weight:bold
 }
 
-.popup-dur3 {
-    -webkit-animation-duration: 15s;
-    /*-webkit-animation-delay: 1s;*/
-    /*-webkit-animation-iteration-count: infinite;*/
+.alert {
+    /*transition:all linear 0.5s;*/
+    /*-webkit-transition:2s linear all; transition: 2s linear all; opacity:1;*/
+    background: transparent;
+    color:white;
+    background: red;
+}
+.alert.ng-invalid {
+    color:white;
+    background: red;
 }
 
-.fade {list-style: none;animation-duration:2s}
+/*.fade {list-style: none;animation-duration:2s}*/
 
 .fade.ng-enter,
 .fade.ng-leave,

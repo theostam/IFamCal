@@ -1,6 +1,8 @@
 angular.module('auth.service', ['ngCookies'])
-    .factory('Auth', function ($http, $cookieStore, Localstorage) {
+    .factory('Auth', function ($q, $http, $cookieStore, Localstorage) {
+
         var _user = $cookieStore.get('starter.user');
+
         var setUser = function (user) {
             _user = user;
             $cookieStore.put('starter.user', _user);
@@ -21,16 +23,44 @@ angular.module('auth.service', ['ngCookies'])
         return {
             setUser: setUser,
 
-            login: function (username, password, callback) {
+            login: function (username, password) {
+                var SERVERHOST = Localstorage.get("hostname");
+                var SERVERPORT = Localstorage.get("portnumber");
+                SERVERHOST = 'localhost';
+                SERVERPORT = '8080';
+                var promise =  $http.post("http://"+SERVERHOST+":"+SERVERPORT+"/login", { username: username, password: password }).then(
+                    function(data){
+                        var login_successful = data.result == 'login successful';
+                        if(login_successful) {
+                            Auth.setUser({username: Localstorage.get("username")});
+                            var token = 'stubbedToken';
+                            // TODO:
+                            // Auth.setCredential( {username: Localstorage.get("username"), token: token} );
+                            // no returning of token.
+                            console.log("login ok");
+                        }
+                    },
+                    function(){
+                        console.log("login not ok");
+                        return $q.reject("login not ok")
+                    }
+                );
+                return promise;
+            },
+
+            loginAndCallback: function (username, password, callback) {
                 var SERVERHOST = Localstorage.get("hostname");
                 var SERVERPORT = Localstorage.get("portnumber");
                 SERVERHOST = 'localhost';
                 SERVERPORT = '8080';
                     $http.post("http://"+SERVERHOST+":"+SERVERPORT+"/login", { username: username, password: password })
-                    .success(function (response) {
-                        callback(response);
-                    });
-
+                    .then(
+                        function (response) {
+                            callback(response);
+                        },
+                        function (response){
+                            callback(response);
+                        });
             },
             isLoggedIn: function () {
                 return _user ? true : false;

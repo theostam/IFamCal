@@ -5,7 +5,8 @@ angular.module('Agenda', [])
         var vm = this;
 
         var connectionType = checkConnection();  // NONE, WIFI or CELL
-                showConnectionStatus( connectionType );
+        showConnectionStatus( connectionType );
+
         vm.notes = notes ;
 
 //        vm.notes = Notes.list;

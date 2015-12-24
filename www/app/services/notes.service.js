@@ -3,20 +3,28 @@ angular.module('notes.service', [])
 .factory('Notes', function( $http, Localstorage, SERVERHOST, SERVERPORT) {
         var self = this;
 
-        self.list = [];
+        var _list = [];
+
+        self.getList = function(){
+            return _list;
+        }
+//        self.list = [];
 
         // initial loading of notes
         var localNotes = Localstorage.get("notes");
         if (typeof localNotes != 'undefined'){
-            self.list = JSON.parse( localNotes );
+            _list = JSON.parse( localNotes );
+//            self.list = JSON.parse( localNotes );
         }
 
         self.add = function( note ){
-            self.list.push( note );
+            _list.push( note );
+//            self.list.push( note );
         };
 
         self.remove = function(){
-            self.list = []
+            _list = []
+//            self.list = []
         } ;
 
         self.save = function (note) {
@@ -33,7 +41,8 @@ angular.module('notes.service', [])
                 });
             self.add( note );
             // save data in Local storage
-            Localstorage.set("notes", JSON.stringify( self.list ));
+            Localstorage.set("notes", JSON.stringify( _list ));
+//            Localstorage.set("notes", JSON.stringify( self.list ));
 
         } ;
 
@@ -45,13 +54,16 @@ angular.module('notes.service', [])
                 function(data){
                     processNewNotes( data.data.result ); // testing: vm.notes = data;
                     Localstorage.set("lastUpdateTimestamp", moment().format("YYYYMMDD HHmmss"));
-                    Localstorage.set("notes", JSON.stringify( self.list ));
+                    Localstorage.set("notes", JSON.stringify( _list ));
                     displayNotes();
                     console.log("data received: " + data.data.result );
-                    return self.list;
+                    return _list;
+//                    return self.list;
                 },
                 function(data){
                     console.log( 'error' + data );
+                    return _list;
+//                    return self.list;
                 }
             );
             return promise;
@@ -87,8 +99,10 @@ angular.module('notes.service', [])
         };
 
         function indexof( note ){
-            for (var i = 0; i < self.list.length; i++) {
-                if (self.list[i].date === note.date && self.list[i].name === note.name) {
+            for (var i = 0; i < _list.length; i++) {
+                if (_list[i].date === note.date && _list[i].name === note.name) {
+                    //for (var i = 0; i < self.list.length; i++) {
+                    //    if (self.list[i].date === note.date && self.list[i].name === note.name) {
                     return i;
                 }
             }
@@ -106,12 +120,12 @@ angular.module('notes.service', [])
             for( var i=0; i < data.length; i++){
                 var index = indexof( data[i] );
                 if (index < 0){
-                    self.list.push( data[i] );
+                    _list.push( data[i] );
                 } else{
                     if (data[i].text == ''){
-                        self.list.splice(index, 1);
+                        _list.splice(index, 1);
                     } else{
-                        self.list[index].text = data[i].text + '*';
+                        _list[index].text = data[i].text + '*';
                     }
                 }
             }
@@ -119,8 +133,8 @@ angular.module('notes.service', [])
 
         function displayNotes(){
             console.log('content Notes:');
-            for( var i=0; i < self.list.length; i++) {
-                console.log( self.list[i] );
+            for( var i=0; i < _list.length; i++) {
+                console.log( _list[i] );
             }
             console.log('END content Notes:');
         }

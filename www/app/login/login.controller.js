@@ -18,7 +18,7 @@ angular.module('Login', [])
             return;
           }
           $scope.dataLoading = true;
-          Auth.login($scope.loginData.username, $scope.loginData.password, function(response) {
+          Auth.loginAndCallback($scope.loginData.username, $scope.loginData.password, function(response) {
             var login_successful = response.result == 'login successful';
             if(login_successful) {
                   Auth.setUser( {username: $scope.loginData.username} );
@@ -29,7 +29,7 @@ angular.module('Login', [])
 
               $state.go("app.calendar");
             } else {
-              $scope.error = response.result;
+              $scope.error = (response.result ? response.result: 'unknown error');
               $scope.dataLoading = false;
               console.log('error logging in:'+$scope.error)
             }
