@@ -1,5 +1,5 @@
 angular.module('auth.service', ['ngCookies'])
-    .factory('Auth', function ($q, $http, $cookieStore, Localstorage) {
+    .factory('Auth', function ($q, $http, $cookieStore, Localstorage, Notification) {
 
         var _user = $cookieStore.get('starter.user');
 
@@ -38,10 +38,12 @@ angular.module('auth.service', ['ngCookies'])
                             // Auth.setCredential( {username: Localstorage.get("username"), token: token} );
                             // no returning of token.
                             console.log("login ok");
+                            Notification.notify('login succeeded')
                         }
                     },
                     function(){
                         console.log("login not ok");
+                        Notification.notify('login failed');
                         return $q.reject("login not ok")
                     }
                 );

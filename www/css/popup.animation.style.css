@@ -10,9 +10,8 @@
   border-radius: 10px !important;
 }
 
-.popup-head
-{
-
+.popup-head{
+  display: none;
 }
 
 .popup-title
